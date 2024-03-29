@@ -51,7 +51,7 @@ public class UserController {
 		User user = userService.findById(userId);
 		model.put("users", Arrays.asList(user));
 		model.put("user", user);
-		return "users";
+		return "user-view";
 	}
 	
 	@PostMapping("/users/{userId}")
