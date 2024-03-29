@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://thymeleaf.org">
 	<head>
-		<title>User</title>
+		<title>User Details</title>
 	</head>
 	<body>
-		<h1>User</h1>
+		<h1>User Details</h1>
 		
-		<div>
-			<form action="" method="post">
+		<div th:if="${users !=null and #lists.size(users) == 1}">
+			<form th:action="@{/users/{userId}(userId=${user.userId})}" method="post">
 				<div>
 					Username: <input type="text" th:field="${user.username}" />
 				</div>

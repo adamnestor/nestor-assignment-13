@@ -1,15 +1,24 @@
 package com.coderscampus.assignment13.domain;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 @Entity
+@Table(name="address")
 public class Address {
+	
+	@Id
 	private Long userId;
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+			orphanRemoval = true)
+	@MapsId
+	@JoinColumn(name="user_id")
 	private User user;
 	private String addressLine1;
 	private String addressLine2;
@@ -18,7 +27,7 @@ public class Address {
 	private String country;
 	private String zipCode;
 	
-	@Id
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -26,9 +35,6 @@ public class Address {
 		this.userId = userId;
 	}
 	
-	@OneToOne
-	@MapsId
-	@JoinColumn(name="user_id")
 	public User getUser() {
 		return user;
 	}

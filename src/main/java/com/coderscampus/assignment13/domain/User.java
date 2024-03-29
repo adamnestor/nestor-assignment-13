@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -18,15 +19,25 @@ import javax.persistence.Table;
 @Entity // Class name = User, DB Table name = user
 @Table(name = "users")
 public class User {
+	
+	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long userId;
 	private String username;
 	private String password;
 	private String name;
 	private LocalDate createdDate;
+	@ManyToMany(fetch = FetchType.EAGER, 
+			cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	@JoinTable(name = "user_account",
+			joinColumns = @JoinColumn(name = "user_id"), 
+			inverseJoinColumns = @JoinColumn(name = "account_id"))
 	private List<Account> accounts = new ArrayList<>();
+	@OneToOne(mappedBy = "user",
+			cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE }, 
+			orphanRemoval = true)
 	private Address address;
 	
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	
 	public Long getUserId() {
 		return userId;
 	}
@@ -58,17 +69,12 @@ public class User {
 	public void setCreatedDate(LocalDate createdDate) {
 		this.createdDate = createdDate;
 	}
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "user_account",
-	           joinColumns = @JoinColumn(name = "user_id"), 
-	           inverseJoinColumns = @JoinColumn(name = "account_id"))
 	public List<Account> getAccounts() {
 		return accounts;
 	}
 	public void setAccounts(List<Account> accounts) {
 		this.accounts = accounts;
 	}
-	@OneToOne(mappedBy = "user")
 	public Address getAddress() {
 		return address;
 	}

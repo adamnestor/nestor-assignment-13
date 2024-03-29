@@ -6,12 +6,19 @@
 	<body>
 		<h1>Users</h1>
 		<div th:each="user : ${users}">
-		    <a th:text="${user.userId}" th:href="@{/users/{userId}(userId=${user.userId})}"></a><br/>
-			<span th:text="${user.username}"></span><br/>
-			<span th:text="${user.name}"></span><br/>
+		    <a th:href="@{/users/{userId}(userId=${user.userId})}">
+				<span th:text="${user.userId}"></span>
+			</a>
+			<br/>
+			<span th:text="${user.username}"></span>
+			<br/>
+			<span th:text="${user.name}"></span>
+			<br/>
 			<span th:text="${user.password}"></span>
 			<div th:each="account : ${user.accounts}">
+				<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId}, accountId=${account.accountId})}">
 				<span th:text="${account.accountName}"></span>
+				</a>
 			</div>
 			<hr/>
 		</div>
