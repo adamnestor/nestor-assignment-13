@@ -9,8 +9,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.coderscampus.assignment13.domain.Account;
 import com.coderscampus.assignment13.domain.Address;
 import com.coderscampus.assignment13.domain.User;
+import com.coderscampus.assignment13.repository.AccountRepository;
 import com.coderscampus.assignment13.repository.AddressRepository;
 import com.coderscampus.assignment13.repository.UserRepository;
 
@@ -21,6 +23,8 @@ public class UserService {
 	private UserRepository userRepo;
 	@Autowired
 	private AddressRepository addressRepo;
+	@Autowired
+	private AccountRepository accountRepo;
 
 	public Set<User> findAll() {
 		List<User> userList = new ArrayList<>(userRepo.findAllUsersWithAccountsAndAddresses());
@@ -65,6 +69,28 @@ public class UserService {
 	
 	public void delete(Long userId) {
 		userRepo.deleteById(userId);
+	}
+
+	public Account createAccount(Long userId) {
+		User user = findById(userId);
+		
+		if(user != null) {
+			Account newAccount = new Account();
+			newAccount.getUsers().add(user);
+			newAccount.setAccountName("Account #" + user.getAccounts().size());
+			user.getAccounts().add(newAccount);
+			userRepo.save(user);
+			accountRepo.save(newAccount);
+			
+			return newAccount;
+		}
+		
+		return null;
+	}
+
+	public Account findAccountById(Long accountId) {
+		Optional<Account> accountOpt = accountRepo.findById(accountId);
+		return accountOpt.orElse(null);
 	}
 
 

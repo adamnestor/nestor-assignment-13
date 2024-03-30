@@ -17,7 +17,9 @@
 				<div>
 					Full Name: <input type="text" th:field="${user.name}" />
 				</div>
+				
 				<hr/>
+				
 				<div>
 					Address Line 1: <input type="text" th:field="${address.addressLine1}" />
 				</div>
@@ -45,6 +47,37 @@
 			<form th:action="@{/users/{userId}/delete(userId=${user.userId})}" method="post">
 				<input type="submit" value="Delete User Account" />
 			</form>
+			
+			<hr/>
+			
+			<h2>Accounts</h2>
+			<div th:each="account : ${user.accounts}">
+				<a th:href="@{/users/{userId}/accounts/{accountId}(userId=${user.userId}, accountId=${account.accountId})}">
+					<span th:text="${account.accountName}"></span>
+				</a>
+			</div>
+		</div>
+		
+		<div th:unless="${#lists.size(users) == 1}" th:each="user : ${users}">
+		    <span th:text="${user.userId}"></span>
+		    <br/>
+			<span th:text="${user.username}"></span>
+			<br/>
+			<span th:text="${user.name}"></span>
+			<br/>
+			<span th:text="${user.password}"></span>
+			
+			<div th:each="account : ${user.accounts}">
+				<span th:text="${account.accountName}"></span>
+			</div>
+			<hr/>
+		</div>
+		
+		<div th:if="${#lists.size(users) == 1}">
+			<form th:action="@{/users/{userId}/accounts/ (userId=${user.userId})}" method="post">
+				<input type="submit" value="Create New Bank Account" />
+			</form>
+			<br/>
 			<a th:href="@{/users}">Back</a>
 		</div>
 	</body>

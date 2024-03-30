@@ -51,7 +51,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/users/{userId}")
-	public String getUserByUserId (ModelMap model, @PathVariable Long userId) {
+	public String getSingleUser (ModelMap model, @PathVariable Long userId) {
 		User user = userService.findById(userId);
 		Address address = addressService.findAddressById(user);
 		model.put("users", Arrays.asList(user));
@@ -61,7 +61,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/users/{userId}")
-	public String postUserByUserId (User user, Address address) {
+	public String postSingleUser (User user, Address address) {
 		User foundUser = userService.findById(user.getUserId());
 		
 		foundUser.setName(user.getName());
