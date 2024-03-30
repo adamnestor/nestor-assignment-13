@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -39,7 +40,7 @@ public class AccountController {
 	}
 	
 	@PostMapping("/users/{userId}/accounts/{accountId}")
-	public String updateSingleAccount(@PathVariable Long userId, @PathVariable Long accountId) {
+	public String updateSingleAccount(@PathVariable Long userId, @PathVariable Long accountId, @ModelAttribute Account account) {
 		Account existingAccount = userService.findAccountById(accountId);
 		
 		if (existingAccount != null) {

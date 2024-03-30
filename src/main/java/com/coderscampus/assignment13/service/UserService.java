@@ -93,5 +93,10 @@ public class UserService {
 		return accountOpt.orElse(null);
 	}
 
+	public Account saveAccount(Account account) {
+		return accountRepo.save(account);
+		
+	}
+
 
 }
