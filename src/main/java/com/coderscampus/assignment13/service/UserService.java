@@ -18,7 +18,7 @@ import com.coderscampus.assignment13.repository.UserRepository;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private UserRepository userRepo;
 	@Autowired
@@ -58,33 +58,33 @@ public class UserService {
 	}
 
 	public User saveUser(User user, Address address) {
-		
+
 		user.setAddress(address);
 		address.setUser(user);
-		
+
 		addressRepo.save(address);
-		
+
 		return userRepo.save(user);
 	}
-	
+
 	public void delete(Long userId) {
 		userRepo.deleteById(userId);
 	}
 
 	public Account createAccount(Long userId) {
 		User user = findById(userId);
-		
-		if(user != null) {
+
+		if (user != null) {
 			Account newAccount = new Account();
 			newAccount.getUsers().add(user);
 			newAccount.setAccountName("Account #" + user.getAccounts().size());
 			user.getAccounts().add(newAccount);
 			userRepo.save(user);
 			accountRepo.save(newAccount);
-			
+
 			return newAccount;
 		}
-		
+
 		return null;
 	}
 
@@ -95,8 +95,7 @@ public class UserService {
 
 	public Account saveAccount(Account account) {
 		return accountRepo.save(account);
-		
-	}
 
+	}
 
 }

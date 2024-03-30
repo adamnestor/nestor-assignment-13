@@ -14,24 +14,24 @@ public class AddressService {
 
 	@Autowired
 	private AddressRepository addressRepo;
-	
+
 	@Autowired
 	public AddressService(UserRepository userRepository) {
 		this.userRepository = userRepository;
 	}
-	
+
 	public void updateUserAddress(Long userId, Address updatedAddress) {
 		User existingUser = userRepository.findById(userId).orElse(null);
-		
+
 		if (existingUser != null) {
 			updateAddress(existingUser, updatedAddress);
 			userRepository.save(existingUser);
 		}
 	}
-	
+
 	private void updateAddress(User user, Address updatedAddress) {
 		Address existingAddress = user.getAddress();
-		
+
 		if (existingAddress != null) {
 			existingAddress.setAddressLine1(updatedAddress.getAddressLine1());
 			existingAddress.setAddressLine2(updatedAddress.getAddressLine2());
@@ -41,7 +41,7 @@ public class AddressService {
 			existingAddress.setZipCode(updatedAddress.getZipCode());
 		} else {
 			Address newAddress = new Address();
-			
+
 			newAddress.setAddressLine1(updatedAddress.getAddressLine1());
 			newAddress.setAddressLine2(updatedAddress.getAddressLine2());
 			newAddress.setCity(updatedAddress.getCity());
@@ -51,14 +51,14 @@ public class AddressService {
 			user.setAddress(newAddress);
 		}
 	}
-	
+
 	public Address findAddressById(User user) {
 		Long userId = user.getUserId();
 		Address address = addressRepo.findAddressByUserId(userId);
 		if (address == null) {
 			address = new Address();
 		}
-		
+
 		return address;
 	}
 }
