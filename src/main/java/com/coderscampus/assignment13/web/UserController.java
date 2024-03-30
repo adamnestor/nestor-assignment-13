@@ -17,41 +17,40 @@ import com.coderscampus.assignment13.service.UserService;
 
 @Controller
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private AddressService addressService;
-	
-	
+
 	@GetMapping("/register")
-	public String getCreateUser (ModelMap model) {
-		
+	public String getCreateUser(ModelMap model) {
+
 		model.put("user", new User());
-		
+
 		return "register";
 	}
-	
+
 	@PostMapping("/register")
-	public String postCreateUser (User user) {
+	public String postCreateUser(User user) {
 		userService.saveUser(user);
 		return "redirect:/users";
 	}
-	
+
 	@GetMapping("/users")
-	public String getAllUsers (ModelMap model) {
+	public String getAllUsers(ModelMap model) {
 		Set<User> users = userService.findAll();
-		
+
 		model.put("users", users);
 		if (users.size() == 1) {
 			model.put("user", users.iterator().next());
 		}
-		
+
 		return "users";
 	}
-	
+
 	@GetMapping("/users/{userId}")
-	public String getSingleUser (ModelMap model, @PathVariable Long userId) {
+	public String getSingleUser(ModelMap model, @PathVariable Long userId) {
 		User user = userService.findById(userId);
 		Address address = addressService.findAddressById(user);
 		model.put("users", Arrays.asList(user));
@@ -59,21 +58,21 @@ public class UserController {
 		model.put("address", address);
 		return "user-view";
 	}
-	
+
 	@PostMapping("/users/{userId}")
-	public String postSingleUser (User user, Address address) {
+	public String postSingleUser(User user, Address address) {
 		User foundUser = userService.findById(user.getUserId());
-		
+
 		foundUser.setName(user.getName());
 		foundUser.setPassword(user.getPassword());
 		foundUser.setUsername(user.getUsername());
-		
+
 		userService.saveUser(user, address);
 		return "redirect:/users/" + user.getUserId();
 	}
-	
+
 	@PostMapping("/users/{userId}/delete")
-	public String deleteOneUser (@PathVariable Long userId) {
+	public String deleteOneUser(@PathVariable Long userId) {
 		userService.delete(userId);
 		return "redirect:/users";
 	}
