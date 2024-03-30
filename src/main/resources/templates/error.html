@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Something Happened!</title>
+</head>
+
+<body>
+	<h1>Error: Something Unexpected Happened!</h1>
+	<h3>We weren't expecting this. Return to previous screen.</h3>
+
+	<a th:href="@{/users/{userId}(userId=${user.userId})}">Back</a>
+</body>
+
+</html>
