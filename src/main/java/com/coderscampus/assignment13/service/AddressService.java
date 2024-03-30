@@ -55,6 +55,9 @@ public class AddressService {
 	public Address findAddressById(User user) {
 		Long userId = user.getUserId();
 		Address address = addressRepo.findAddressByUserId(userId);
+		if (address == null) {
+			address = new Address();
+		}
 		
 		return address;
 	}
