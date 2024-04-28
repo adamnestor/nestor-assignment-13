@@ -61,13 +61,18 @@ public class UserController {
 
 	@PostMapping("/users/{userId}")
 	public String postSingleUser(User user, Address address) {
+
 		User foundUser = userService.findById(user.getUserId());
 
 		foundUser.setName(user.getName());
-		foundUser.setPassword(user.getPassword());
 		foundUser.setUsername(user.getUsername());
 
-		userService.saveUser(user, address);
+		if (!user.getPassword().isEmpty()) {
+			foundUser.setPassword(user.getPassword());
+		}
+
+		userService.saveUser(foundUser, address);
+		
 		return "redirect:/users/" + user.getUserId();
 	}
 

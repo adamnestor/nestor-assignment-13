@@ -38,24 +38,45 @@ public class UserService {
 	}
 
 	public User saveUser(User user) {
-		Address address = new Address();
-		if (user.getUserId() == null) {
-			System.out.println("User ID was Null");
 
-		} else if (address.getUserId() == null) {
-			user.setAddress(address);
-			address.setAddressLine1(user.getAddress().getAddressLine1());
-			address.setAddressLine2(user.getAddress().getAddressLine2());
-			address.setCity(user.getAddress().getCity());
-			address.setRegion(user.getAddress().getRegion());
-			address.setCountry(user.getAddress().getCountry());
-			address.setZipCode(user.getAddress().getZipCode());
-			address.setUserId(user.getUserId());
-			address.setUser(user);
-			user.setAddress(address);
+		User existingUser = findById(user.getUserId());
+
+		if (existingUser != null) {
+
+			if (user.getUsername() != null) {
+				existingUser.setUsername(user.getUsername());
+			}
+			if (user.getName() != null) {
+				existingUser.setName(user.getName());
+			}
+			if (!user.getPassword().isEmpty()) {
+				existingUser.setPassword(user.getPassword());
+			}
+			return userRepo.save(existingUser);
+		} else {
+			return userRepo.save(user);
 		}
-		return userRepo.save(user);
 	}
+
+//	public User saveUser(User user) {
+//		Address address = new Address();
+//		if (user.getUserId() == null) {
+//			System.out.println("User ID was Null");
+//
+//		} else if (address.getUserId() == null) {
+//			user.setAddress(address);
+//			address.setAddressLine1(user.getAddress().getAddressLine1());
+//			address.setAddressLine2(user.getAddress().getAddressLine2());
+//			address.setCity(user.getAddress().getCity());
+//			address.setRegion(user.getAddress().getRegion());
+//			address.setCountry(user.getAddress().getCountry());
+//			address.setZipCode(user.getAddress().getZipCode());
+//			address.setUserId(user.getUserId());
+//			address.setUser(user);
+//			user.setAddress(address);
+//		}
+//		return userRepo.save(user);
+//	}
 
 	public User saveUser(User user, Address address) {
 
